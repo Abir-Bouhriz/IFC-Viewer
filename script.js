@@ -31,16 +31,13 @@ async function load () {
 
   // Setup camera controls
   const controls = viewer.context.ifcCamera.cameraControls
-  // controls.setPosition(15, 13, 8, false)
   controls.setLookAt(18, 20, 18, 0, 10, 0)
 
   await viewer.shadowDropper.renderShadow(model.modelID)
-
-  // const project = await viewer.IFC.getSpatialStructure(model.modelID)
-  // console.log('project: ', project)
 }
 load()
-// download properties in json file
+
+// Download properties in json file
 const buttonExport = document.getElementById('button-export')
 buttonExport.addEventListener('click',
   async function propertiesExport () {
@@ -56,7 +53,7 @@ buttonExport.addEventListener('click',
 )
 // END OF download properties in json file
 
-// 13 annotation/ measuring
+// Annotation/ measuring
 viewer.dimensions.active = true
 viewer.dimensions.previewActive = true
 
@@ -124,7 +121,6 @@ function removeAllChildren (element) {
   }
 }
 
-// window.onclick = async () => await viewer.IFC.selector.prePickIfcItem()
 await viewer.IFC.applyWebIfcConfig({
   COORDINATE_TO_ORIGIN: true,
   USE_FAST_BOOLS: true
