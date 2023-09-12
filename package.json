@@ -1,0 +1,26 @@
+{
+  "name": "web-ifc-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "rollup": "^3.28.0"
+  },
+  "dependencies": {
+    "camera-controls": "^2.7.0",
+    "dxf-writer": "^1.18.4",
+    "three": "^0.135.0",
+    "web-ifc": "^0.0.39",
+    "web-ifc-viewer": "^1.0.217"
+  }
+}
