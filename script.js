@@ -72,27 +72,28 @@ window.addEventListener('click', async function () {
   console.log('result', result)
   if (!result) {
     viewer.IFC.selector.unpickIfcItems()
-    return
+    createPropertiesMenu(result)
+  } else {
+    const { modelID, id } = result
+    const props = await viewer.IFC.getProperties(modelID, id, true, false)
+    console.log('props: ', props)
+    createPropertiesMenu(props)
   }
-  const { modelID, id } = result
-  const props = await viewer.IFC.getProperties(modelID, id, true, false)
-  console.log('props: ', props)
-  createPropertiesMenu(props)
 })
 
 const propsGUI = document.getElementById('ifc-property-menu-root')
 
 function createPropertiesMenu (properties) {
-  console.log(properties)
-
   removeAllChildren(propsGUI)
 
   delete properties.psets
   delete properties.mats
   delete properties.type
 
-  for (const key in properties) {
-    createPropertyEntry(key, properties[key])
+  if (properties) {
+    for (const key in properties) {
+      createPropertyEntry(key, properties[key])
+    }
   }
 }
 
