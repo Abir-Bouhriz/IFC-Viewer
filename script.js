@@ -10,12 +10,6 @@ viewer.grid.setGrid()
 viewer.axes.setAxes()
 
 let model
-async function loadIfc (url) {
-  model = await viewer.IFC.loadIfcUrl(url)
-  await viewer.shadowDropper.renderShadow(model.modelID)
-  viewer.context.renderer.postProduction.active = true
-}
-loadIfc('./assets/CasaRebecca5.ifc')
 
 async function load () {
   const input = document.getElementById('file-input')
@@ -28,6 +22,7 @@ async function load () {
       const file = input.files[0]
       const url = URL.createObjectURL(file)
       model = await viewer.IFC.loadIfcUrl(url)
+      // scene.add(model)
       ifcModels.push(model)
       await viewer.shadowDropper.renderShadow(model.modelID)
       viewer.context.renderer.postProduction.active = true
@@ -36,10 +31,15 @@ async function load () {
 
   const controls = viewer.context.ifcCamera.cameraControls
   controls.setLookAt(18, 20, 18, 0, 10, 0)
-
-  await viewer.shadowDropper.renderShadow(model.modelID)
 }
 load()
+
+async function loadIfc (url) {
+  const model = await viewer.IFC.loadIfcUrl(url)
+  await viewer.shadowDropper.renderShadow(model.modelID)
+  viewer.context.renderer.postProduction.active = true
+}
+loadIfc('./assets/CasaRebecca5.ifc')
 
 // Download properties in json file
 const buttonExport = document.getElementById('button-export')
