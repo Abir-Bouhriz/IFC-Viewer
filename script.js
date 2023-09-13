@@ -18,30 +18,8 @@ async function checkFileExistence () {
   try {
     const response = await fetch(folderPath)
     if (response.ok) {
-      const htmlContent = await response.text()
-
-      const tempDiv = document.createElement('div')
-      tempDiv.innerHTML = htmlContent
-
-      const anchorElements = tempDiv.querySelectorAll('a')
-
-      let firstIfcFile = null
-
-      for (let i = 0; i < anchorElements.length; i++) {
-        const element = anchorElements[i]
-        const href = element.getAttribute('href')
-        if (href && href.endsWith(desiredFormat)) {
-          firstIfcFile = href
-          break
-        }
-      }
-
-      if (firstIfcFile) {
-        const filePath = `${firstIfcFile}`
-        loadIfc(filePath)
-      } else {
-        load()
-      }
+      const text = await response.text()
+      text.includes(desiredFormat) ? loadIfc('./assets/CasaRebecca5.ifc') : load()
     } else {
       console.error('Failed to fetch folder:', response.status, response.statusText)
     }
