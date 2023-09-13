@@ -6,7 +6,6 @@ import { IfcViewerAPI } from 'web-ifc-viewer'
 const container = document.getElementById('viewer-container')
 const viewer = new IfcViewerAPI({ container, backgroundColor: new Color(0xffffff) })
 
-// Create grid and axes
 viewer.grid.setGrid()
 viewer.axes.setAxes()
 
@@ -71,7 +70,6 @@ async function load () {
     }
   )
 
-  // Setup camera controls
   const controls = viewer.context.ifcCamera.cameraControls
   controls.setLookAt(18, 20, 18, 0, 10, 0)
 
