@@ -10,25 +10,12 @@ viewer.grid.setGrid()
 viewer.axes.setAxes()
 
 let model
-
-const folderPath = 'assets'
-const desiredFormat = '.ifc'
-
-async function checkFileExistence () {
-  try {
-    const response = await fetch(folderPath)
-    if (response.ok) {
-      const text = await response.text()
-      text.includes(desiredFormat) ? loadIfc('./assets/CasaRebecca5.ifc') : load()
-    } else {
-      console.error('Failed to fetch folder:', response.status, response.statusText)
-    }
-  } catch (err) {
-    console.error('Error:', err)
-  }
+async function loadIfc (url) {
+  model = await viewer.IFC.loadIfcUrl(url)
+  await viewer.shadowDropper.renderShadow(model.modelID)
+  viewer.context.renderer.postProduction.active = true
 }
-
-checkFileExistence()
+loadIfc('./assets/CasaRebecca5.ifc')
 
 async function load () {
   const input = document.getElementById('file-input')
@@ -41,7 +28,6 @@ async function load () {
       const file = input.files[0]
       const url = URL.createObjectURL(file)
       model = await viewer.IFC.loadIfcUrl(url)
-      // scene.add(model)
       ifcModels.push(model)
       await viewer.shadowDropper.renderShadow(model.modelID)
       viewer.context.renderer.postProduction.active = true
@@ -53,12 +39,7 @@ async function load () {
 
   await viewer.shadowDropper.renderShadow(model.modelID)
 }
-
-async function loadIfc (url) {
-  const model = await viewer.IFC.loadIfcUrl(url)
-  await viewer.shadowDropper.renderShadow(model.modelID)
-  viewer.context.renderer.postProduction.active = true
-}
+load()
 
 // Download properties in json file
 const buttonExport = document.getElementById('button-export')
