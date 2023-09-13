@@ -11,6 +11,48 @@ viewer.grid.setGrid()
 viewer.axes.setAxes()
 
 let model
+
+const folderPath = 'assets'
+const desiredFormat = '.ifc'
+
+async function checkFileExistence () {
+  try {
+    const response = await fetch(folderPath)
+    if (response.ok) {
+      const htmlContent = await response.text()
+
+      const tempDiv = document.createElement('div')
+      tempDiv.innerHTML = htmlContent
+
+      const anchorElements = tempDiv.querySelectorAll('a')
+
+      let firstIfcFile = null
+
+      for (let i = 0; i < anchorElements.length; i++) {
+        const element = anchorElements[i]
+        const href = element.getAttribute('href')
+        if (href && href.endsWith(desiredFormat)) {
+          firstIfcFile = href
+          break
+        }
+      }
+
+      if (firstIfcFile) {
+        const filePath = `${firstIfcFile}`
+        loadIfc(filePath)
+      } else {
+        load()
+      }
+    } else {
+      console.error('Failed to fetch folder:', response.status, response.statusText)
+    }
+  } catch (err) {
+    console.error('Error:', err)
+  }
+}
+
+checkFileExistence()
+
 async function load () {
   const input = document.getElementById('file-input')
 
@@ -35,7 +77,12 @@ async function load () {
 
   await viewer.shadowDropper.renderShadow(model.modelID)
 }
-load()
+
+async function loadIfc (url) {
+  const model = await viewer.IFC.loadIfcUrl(url)
+  await viewer.shadowDropper.renderShadow(model.modelID)
+  viewer.context.renderer.postProduction.active = true
+}
 
 // Download properties in json file
 const buttonExport = document.getElementById('button-export')
